@@ -1,0 +1,39 @@
+C51 COMPILER V9.00   IDENTIFY                                                              11/07/2015 17:49:04 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE IDENTIFY
+OBJECT MODULE PLACED IN identify.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE user\identify.c BROWSE DEBUG OBJECTEXTEND PRINT(.\identify.lst) OBJECT(iden
+                    -tify.obj)
+
+line level    source
+
+   1          /*  Includes  ----------------------------------------- */
+   2                  #include <STC12C5A60S2.h>
+   3                  #include "identify.h"
+   4          
+   5          /*      Varianle  ----------------------------------------- */
+   6                  sbit iden0=P2^0;
+   7                  sbit iden1=P2^1;
+   8                  sbit iden2=P2^2;
+   9                  sbit iden3=P2^2;
+  10                  sbit iden4=P2^4;
+  11                  sbit idenS=P2^5;
+  12                  u8 idenA;
+  13                  bit edge;
+  14          
+  15          /*  Function protype  --------------------------------- */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,70 @@
+C51 COMPILER V9.00   PCA                                                                   11/08/2015 02:11:38 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE PCA
+OBJECT MODULE PLACED IN PCA.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE user\PCA.c BROWSE DEBUG OBJECTEXTEND PRINT(.\PCA.lst) OBJECT(PCA.obj)
+
+line level    source
+
+   1          #include <STC12C5A60S2.h>
+   2          #include "intrins.h"
+   3          #include "PCA.h"
+   4          typedef unsigned char BYTE;
+   5          typedef unsigned int WORD;
+   6          
+   7          /*Declare SFR associated with the PCA 
+   8          sfr CCON        =   0xD8;           //PCA control register
+   9          sbit CCF0       =   CCON^0;         //PCA module-0 interrupt flag
+  10          sbit CCF1       =   CCON^1;         //PCA module-1 interrupt flag
+  11          sbit CR         =   CCON^6;         //PCA timer run control bit
+  12          sbit CF         =   CCON^7;         //PCA timer overflow flag
+  13          sfr CMOD        =   0xD9;           //PCA mode register
+  14          sfr CL          =   0xE9;           //PCA base timer LOW
+  15          sfr CH          =   0xF9;           //PCA base timer HIGH
+  16          sfr CCAPM0      =   0xDA;           //PCA module-0 mode register
+  17          sfr CCAP0L      =   0xEA;           //PCA module-0 capture register LOW
+  18          sfr CCAP0H      =   0xFA;           //PCA module-0 capture register HIGH
+  19          sfr CCAPM1      =   0xDB;           //PCA module-1 mode register
+  20          sfr CCAP1L      =   0xEB;           //PCA module-1 capture register LOW
+  21          sfr CCAP1H      =   0xFB;           //PCA module-1 capture register HIGH
+  22          sfr PCA_PWM0     =   0xf2;
+  23          sfr PCA_PWM1     =   0xf3;*/
+  24          
+  25          void pwm_init(void)
+  26          {
+  27   1                                          //Clear all module interrupt flag 清除所有模块中断标志
+  28   1          CMOD = 0x0a;                    //Set PCA timer clock source as Fosc/2        PCA 源设置为系统时钟的一半
+  29   1                                          //Disable PCA timer overflow interrupt 禁用PCA溢出中断
+  30   1          CCAPM1 = 0x42;                  //PCA module-1 work in 8-bit PWM mode and no PCA interrupt
+  31   1              CCAPM0 = 0x42;                  //PCA module-0 work in 8-bit PWM mode and no PCA interrupt 允许比较器运行
+             - 允许CEX1脚8位PWM脉宽输出 没有中断
+  32   1      }
+  33          void pwm(int a,int b)
+  34          {
+  35   1              CCON =0;                       //Initial PCA control register   初始化控制寄存器
+  36   1                                           //PCA timer stop running  PCA定时器停止
+  37   1                                          //Clear CF flag                      清除CF标志                                         
+             -           
+  38   1              CL = 0;                         
+  39   1          CH = 0;
+  40   1          CCAP0H = CCAP0L =255-a;         //PWM0 port output a/256 duty cycle square wave
+  41   1          CCAP1H = CCAP1L =255-b;         //PWM1 port output b/256 duty cycle square wave=
+  42   1          CR = 1;                         //PCA timer start run  PCA计数器开始计数
+  43   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     36    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.00   PCA                                                                   11/08/2015 02:11:38 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

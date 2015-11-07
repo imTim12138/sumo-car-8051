@@ -1,0 +1,6 @@
+"main.obj",
+"UART.obj",
+"ADC.obj",
+"PCA.obj" 
+TO "sumo-car" 
+RAMSIZE(256) 

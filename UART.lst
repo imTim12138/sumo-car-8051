@@ -1,0 +1,87 @@
+C51 COMPILER V9.00   UART                                                                  11/08/2015 02:11:38 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN UART.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE user\UART.c BROWSE DEBUG OBJECTEXTEND PRINT(.\UART.lst) OBJECT(UART.obj)
+
+line level    source
+
+   1          /*------------------------------------------------------------------*/
+   2          /* --- STC MCU Limited ---------------------------------------------*/
+   3          /* --- STC12C5Axx Series MCU UART (8-bit/9-bit)Demo ----------------*/
+   4          /* --- Mobile: (86)13922805190 -------------------------------------*/
+   5          /* --- Fax: 86-0513-55012956,55012947,55012969 ---------------------*/
+   6          /* --- Tel: 86-0513-55012928,55012929,55012966----------------------*/
+   7          /* --- Web: www.STCMCU.com -----------------------------------------*/
+   8          /* --- Web: www.GXWMCU.com -----------------------------------------*/
+   9          /* If you want to use the program or the program referenced in the  */
+  10          /* article, please specify in which data and procedures from STC    */
+  11          /*------------------------------------------------------------------*/
+  12          /*  Includes  ----------------------------------------------------- */
+  13                  #include <STC12C5A60S2.h>
+  14                  #include "UART.h"
+  15                  #include "intrins.h"
+  16          
+  17          /*  Variable -------------------------------------------------------*/
+  18                  sbit bit9 = P1^2;           //P2.2 show UART data bit9
+  19                  extern bit busy;
+  20          
+  21          void UART_Init(void)//9600bps@22.1184MHz
+  22          {
+  23   1              PCON &= 0x7F;           //波特率不倍速
+  24   1              SCON = 0x50;            //8位数据,可变波特率
+  25   1              AUXR |= 0x40;           //定时器1时钟为Fosc,即1T
+  26   1              AUXR &= 0xFE;           //串口1选择定时器1为波特率发生器
+  27   1              TMOD &= 0x0F;           //清除定时器1模式位
+  28   1              TMOD |= 0x20;           //设定定时器1为8位自动重装方式
+  29   1              TL1 = 0xB8;             //设定定时初值
+  30   1              TH1 = 0xB8;             //设定定时器重装值
+  31   1              ET1 = 0;                //禁止定时器1中断
+  32   1              TR1 = 1;                //启动定时器1
+  33   1              ES = 1;                 //Enable UART interrupt
+  34   1          EA = 1;                 //Open master interrupt switch
+  35   1      }
+  36          
+  37          /*----------------------------
+  38          Send a u8 data to UART
+  39          Input: dat (data to be sent)
+  40          Output:None
+  41          ----------------------------*/
+  42          void SendData(s8 dat)
+  43          {
+  44   1          while (busy);           //Wait for the completion of the previous data is sent
+  45   1          busy = 1;
+  46   1          SBUF = dat;             //Send data to UART buffer
+  47   1      }
+  48          
+  49          /*----------------------------
+  50          Send a string to UART
+  51          Input: s (address of string)
+  52          Output:None
+  53          ----------------------------*/
+  54          /*
+  55          void SendString(s8 *s)
+C51 COMPILER V9.00   UART                                                                  11/08/2015 02:11:38 PAGE 2   
+
+  56          {
+  57              while (*s)              //Check the end of the string
+  58              {
+  59                  SendData(*s++);     //Send current char and increment string ptr
+  60              }
+  61          }*/
+  62          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     41    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
